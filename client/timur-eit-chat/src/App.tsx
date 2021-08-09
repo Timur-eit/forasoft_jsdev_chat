@@ -1,15 +1,84 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.scss';
+import React from 'react'
+import socket from './socket'
+import axios from 'axios'
+import {Switch, Route} from 'react-router-dom'
+import { reducer, reducerRecord } from 'reducer'
 
-import Intro from 'Components/Intro'
+import JoinBlock from 'components/JoinBlock'
+import Chat from 'components/Chat'
 
-function App() {
-  return (
-    <div className="App">
-      <Intro title='Welcome'/>
-    </div>
-  );
+import {IUserData} from 'shared/interfaces'
+  
+
+
+interface IAppProps {
+  [property: string]: any
 }
 
-export default App;
+interface roomData {
+  users: string[],
+  messages: [{userName: string, text: string}],
+}
+
+
+const App: React.FC<IAppProps> = () => {
+  const [state, dispatch] = React.useReducer(reducer, reducerRecord)
+
+  const onLogin = async (obj: IUserData) => {
+    dispatch({
+      type: 'JOINED',
+      payload: obj,
+    })
+
+    socket.emit('ROOM_JOIN', obj)
+
+    const response = await axios.get(`http://localhost:9999/rooms/${obj.roomId}`)
+    const data: roomData = response.data
+    if (!data.users.includes(obj.userName)) {
+      data.users.push(obj.userName)
+    }
+
+    setUsers(data.users)
+  }
+
+  const setUsers = (users: string[]) => {
+    dispatch({
+      type: 'SET_USERS',
+      payload: users
+    })
+  }
+
+  const addMessage = (message: string[]) => {
+    dispatch({
+      type: 'NEW_MESSAGE',
+      payload: message
+    })
+  }
+
+  React.useEffect(() => {
+    socket.on('ROOM_SET_USERS', (users: string[]) => setUsers(users))
+    socket.on('ROOM_NEW_MESSAGE', (message: string[]) => addMessage(message))
+  }, [])
+
+  return (
+    <div className="App">      
+      <Switch>
+        <Route exact path="/">
+          <JoinBlock onLogin={onLogin} />
+        </Route>
+        <Route path="/:chat_id">
+          <Chat
+            onLogin={onLogin}
+            users={state.users}
+            messages={state.messages}
+            userName={state.userName}
+            roomId={state.roomId}
+            onAddMessage={addMessage}
+          />
+        </Route>
+      </Switch>
+    </div>
+  )
+}
+
+export default App

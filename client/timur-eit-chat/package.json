@@ -2,11 +2,13 @@
   "name": "timur-eit-chat",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "react": "^17.0.2",
+    "axios": "^0.21.1",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2",
@@ -19,7 +21,11 @@
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "history": "^4.10.1",
-    "node-sass": "^6.0.1"
+    "node-sass": "^6.0.1",
+    "socket.io-client": "^4.1.3",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2"
+
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
