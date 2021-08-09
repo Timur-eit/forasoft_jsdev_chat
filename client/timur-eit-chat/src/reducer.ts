@@ -1,5 +1,4 @@
 import React from 'react'
-
 interface IReducerRecord {
     joined: boolean,
     roomId: null | number,
@@ -15,7 +14,6 @@ export const reducerRecord: IReducerRecord = {
     users: [],
     messages: [],
 }
-
 
 export const reducer: React.Reducer<IReducerRecord, React.ReducerAction<any>> = (state, action: any) => {
     switch (action.type) {

@@ -3,13 +3,9 @@ import socket from './socket'
 import axios from 'axios'
 import {Switch, Route} from 'react-router-dom'
 import { reducer, reducerRecord } from 'reducer'
-
 import JoinBlock from 'components/JoinBlock'
 import Chat from 'components/Chat'
-
 import {IUserData} from 'shared/interfaces'
-  
-
 
 interface IAppProps {
   [property: string]: any
