@@ -1,19 +1,18 @@
 import React, {useEffect} from "react"
-import socket from "../socket"
+import socket from "../../socket"
 import {useParams} from 'react-router-dom'
-import {makeStyles} from '@material-ui/core/styles'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import Divider from '@material-ui/core/Divider'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import Button from "@material-ui/core/Button"
 
-import {IUserData} from '../shared/interfaces'
+import UsersList from 'shared/ui/UsersList'
+import Messages from 'shared/ui/Messages'
 
-interface IChatProps {
+import {IUserData} from '../../shared/interfaces'
+
+import './style.scss'
+
+interface IChatRoomProps {
   users: string[], 
   messages: Array<{userName: string, text: string}>,
   userName: string | null,
@@ -22,20 +21,7 @@ interface IChatProps {
   onLogin: (obj: IUserData) => Promise<void>,
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: '36ch',
-    backgroundColor: theme.palette.background.paper,
-    color: 'black'
-  },
-  inline: {
-    display: 'inline',
-  },
-}))
-
-
-const Chat: React.FC<IChatProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
+const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
   const [messageValue, setMessageValue] = React.useState('')
   const messagesRef = React.useRef(null)
 
@@ -44,7 +30,7 @@ const Chat: React.FC<IChatProps> = ({users, messages, userName, roomId, onAddMes
   }
 
   const params: IParams = useParams()
-  const classes = useStyles()
+  
 
   useEffect(() => {
     if (!userName) {
@@ -76,39 +62,11 @@ const Chat: React.FC<IChatProps> = ({users, messages, userName, roomId, onAddMes
 
   return (
     <div className='chat-container'>
-      <h2>Room: {roomId}</h2>
-      <div className='users-list'>        
-        Online users {users.length}
-        <List >
-          {users.map((user, i) =>
-            <ListItem key={user + i}>
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary={user}/>
-            </ListItem>
-          )}
-        </List>
-      </div>
+      <h2>Room ID: <span>{roomId}</span></h2>
+      <UsersList users={users}/>
 
-      <div ref={messagesRef} className='chat-messages'>
-        <List className={classes.root}>
-          {messages.map((message, i) => {
-            console.log(message)
-            return (
-              <div key={message.userName + i}>
-                <ListItem alignItems="flex-start">
-                  <ListItemText
-                    primary={message.userName}
-                    secondary={message.text}
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li"/>
-              </div>
-
-            )
-          })}
-        </List>
+      <div ref={messagesRef} className='chat-messages'>        
+        <Messages messages={messages} />
       </div>
 
       <div className='users-input'>
@@ -129,4 +87,4 @@ const Chat: React.FC<IChatProps> = ({users, messages, userName, roomId, onAddMes
   )
 }
 
-export default Chat
+export default ChatRoom

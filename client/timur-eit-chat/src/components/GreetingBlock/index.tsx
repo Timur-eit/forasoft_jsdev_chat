@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {IUserData} from 'shared/interfaces'
-import MaterialPaperWraper from 'shared/ui/Paper'
+import MaterialPaperWraper from 'shared/ui/MaterialPaper'
 import './style.scss'
 
 interface IGreetingBlockProps {

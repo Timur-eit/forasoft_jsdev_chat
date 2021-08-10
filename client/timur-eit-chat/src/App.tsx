@@ -3,8 +3,8 @@ import socket from './socket'
 import axios from 'axios'
 import {Switch, Route} from 'react-router-dom'
 import { reducer, reducerRecord } from 'reducer'
-import GreetingBlock from 'components/GreetingBlock/GreetingBlock'
-import Chat from 'components/Chat'
+import GreetingBlock from 'components/GreetingBlock'
+import ChatRoom from 'components/ChatRoom'
 import {IUserData} from 'shared/interfaces'
 
 import 'App.scss'
@@ -65,7 +65,7 @@ const App: React.FC<IAppProps> = () => {
           <GreetingBlock onLogin={onLogin} />
         </Route>
         <Route path="/:chat_id">
-          <Chat
+          <ChatRoom
             onLogin={onLogin}
             users={state.users}
             messages={state.messages}
