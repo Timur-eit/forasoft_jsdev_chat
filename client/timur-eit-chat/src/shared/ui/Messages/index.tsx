@@ -8,8 +8,9 @@ import './style.scss'
 interface IMessagesProps {
     [prop: string]: any,
     messages: Array<{
-        userName: string;
-        text: string;
+        userName: string,
+        text: string,
+        date: Date,
     }>
 }
 
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // width: '100%',
       // maxWidth: '36ch',
     //   backgroundColor: theme.palette.background.paper,
-      
+
     },
     inline: {
       display: 'block',
@@ -29,26 +30,24 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const Messages: React.FC<IMessagesProps> = ({messages}) => {
-    
-    const classes = useStyles()
 
+    const classes = useStyles()
     return (
         <div className='messages-block'>
             <List className={classes.root}>
             {messages.map((message, i) => {
-              console.log(message)
               return (
                 <div className='message' key={message.userName + i}>
                   <ListItem alignItems="flex-start">
                     <ListItemText
                       primary={message.userName}
-                      secondary={message.text}
+                      secondary={`${message.date}: ${message.text}`}
                     />
-                  </ListItem>              
+                  </ListItem>
                 </div>
               )
             })}
-            </List> 
+            </List>
       </div>
     )
 }

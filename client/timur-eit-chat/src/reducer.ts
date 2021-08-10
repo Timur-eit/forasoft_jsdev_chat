@@ -4,7 +4,7 @@ interface IReducerRecord {
     roomId: null | number,
     userName: null | string,
     users: string[],
-    messages: Array<{userName: string, text: string}>,
+    messages: Array<{userName: string, text: string, date: Date}>,
 }
 
 export const reducerRecord: IReducerRecord = {

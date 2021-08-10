@@ -15,7 +15,7 @@ import './style.scss'
 
 interface IChatRoomProps {
   users: string[],
-  messages: Array<{userName: string, text: string}>,
+  messages: Array<{userName: string, text: string, date: Date}>,
   userName: string | null,
   roomId: number | null,
   onAddMessage: any,
@@ -57,6 +57,7 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
     onAddMessage({
       userName,
       text: messageValue,
+      date: new Date(),
     })
     // add user's message to his self front
     setMessageValue('')

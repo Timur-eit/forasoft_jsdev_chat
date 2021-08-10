@@ -13,9 +13,9 @@ interface IAppProps {
   [property: string]: any
 }
 
-interface roomData {
+interface IRoomData {
   users: string[],
-  messages: [{userName: string, text: string}],
+  messages: Array<{userName: string, text: string}>,
 }
 
 
@@ -31,7 +31,7 @@ const App: React.FC<IAppProps> = () => {
     socket.emit('ROOM_JOIN', obj)
 
     const response = await axios.get(`http://localhost:9999/rooms/${obj.roomId}`)
-    const data: roomData = response.data
+    const data: IRoomData = response.data
     if (!data.users.includes(obj.userName)) {
       data.users.push(obj.userName)
     }
@@ -46,7 +46,7 @@ const App: React.FC<IAppProps> = () => {
     })
   }
 
-  const addMessage = (message: string[]) => {
+  const addMessage = (message: Array<{userName: string, text: string, date: Date}>) => {
     dispatch({
       type: 'NEW_MESSAGE',
       payload: message
@@ -55,11 +55,13 @@ const App: React.FC<IAppProps> = () => {
 
   React.useEffect(() => {
     socket.on('ROOM_SET_USERS', (users: string[]) => setUsers(users))
-    socket.on('ROOM_NEW_MESSAGE', (message: string[]) => addMessage(message))
+    socket.on('ROOM_NEW_MESSAGE', (message: Array<{userName: string, text: string, date: Date}>) => {
+      addMessage(message)
+    })
   }, [])
 
   return (
-    <div className="App">      
+    <div className="App">
       <Switch>
         <Route exact path="/">
           <GreetingBlock onLogin={onLogin} />

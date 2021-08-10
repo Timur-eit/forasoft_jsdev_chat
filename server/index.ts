@@ -85,10 +85,11 @@ io.on('connection', socket => {
     socket.on('ROOM_NEW_MESSAGE', ( {roomId, userName, text } ) => {
         interface userMessage {
             userName: string,
-            text: string
+            text: string,
+            date: Date
         }
-
-        const obj: userMessage = { userName, text }
+        const date = new Date()
+        const obj: userMessage = { userName, text, date }
         rooms.get(roomId).get('messages').push(obj)
         socket.broadcast.to(roomId).emit('ROOM_NEW_MESSAGE', obj)
     })
