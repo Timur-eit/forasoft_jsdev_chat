@@ -1,16 +1,9 @@
 import React from "react"
-
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
-import Button from "@material-ui/core/Button"
-
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-
 import './style.scss'
 
 interface IMessagesProps {
@@ -26,10 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       // width: '100%',
       // maxWidth: '36ch',
-      // backgroundColor: theme.palette.background.paper,
+    //   backgroundColor: theme.palette.background.paper,
+      
     },
     inline: {
-      // display: 'inline',
+      display: 'block',
     },
   }),
 );

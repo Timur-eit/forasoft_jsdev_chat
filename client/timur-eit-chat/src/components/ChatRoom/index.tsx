@@ -1,6 +1,7 @@
 import React, {useEffect} from "react"
+import axios from 'axios'
 import socket from "../../socket"
-import {useParams} from 'react-router-dom'
+import {useParams, useHistory} from 'react-router-dom'
 
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import Button from "@material-ui/core/Button"
@@ -13,7 +14,7 @@ import {IUserData} from '../../shared/interfaces'
 import './style.scss'
 
 interface IChatRoomProps {
-  users: string[], 
+  users: string[],
   messages: Array<{userName: string, text: string}>,
   userName: string | null,
   roomId: number | null,
@@ -30,15 +31,22 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
   }
 
   const params: IParams = useParams()
-  
+  const history = useHistory()
 
-  useEffect(() => {
-    if (!userName) {
-      const userName: string | null = window.prompt('Please enter user name')    
-      const obj: any = {userName, roomId: params.chat_id}
-      onLogin(obj)
-    }
-  }, [params, userName, roomId, onLogin])
+  useEffect( () => {
+      if (!userName) {
+        axios.get(`http://localhost:9999/rooms/${params.chat_id}`)
+          .then((_data) => {
+            const userName: string | null = window.prompt('Please enter user name')
+            const obj: any = {userName, roomId: params.chat_id}
+            onLogin(obj)
+          })
+          .catch((_err) => {            
+            alert('This room doesn`s exist, please create the rooom')
+            history.push('/')
+          })
+        }
+  }, [params, userName, onLogin, history])
 
   const onSendMessage = () => {
     socket.emit('ROOM_NEW_MESSAGE', {
@@ -65,7 +73,7 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
       <h2>Room ID: <span>{roomId}</span></h2>
       <UsersList users={users}/>
 
-      <div ref={messagesRef} className='chat-messages'>        
+      <div ref={messagesRef} className='chat-messages'>
         <Messages messages={messages} />
       </div>
 

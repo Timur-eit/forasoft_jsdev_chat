@@ -34,7 +34,6 @@ const rooms: ts.ESMap<string, any> = new Map()
 
 app.get('/rooms/:roomId', (req, res) => {
     const { roomId } = req.params
-
     interface roomData {
         users: string[],
         messages: string[],
