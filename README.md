@@ -30,4 +30,5 @@ Frontend:
 * ReactJS
 * TypeScript
 * Material-UI
+* SASS
 * socket.io-client
