@@ -36,8 +36,19 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
       if (!userName) {
         axios.get(`http://localhost:9999/rooms/${params.chat_id}`)
           .then((_data) => {
-            const userName: string | null = window.prompt('Please enter user name')
-            const obj: any = {userName, roomId: params.chat_id}
+            let userName: string = '';
+            let roomId: string | undefined = params.chat_id;
+
+            (function getUserName() {
+              const promptName = window.prompt('Please enter user name - max 10 symbols')
+              if (promptName && promptName.length < 10) {
+                userName = promptName
+              } else {
+                getUserName()
+              }
+            })()
+
+            const obj: IUserData = {userName, roomId}
             onLogin(obj)
           })
           .catch((_err) => {
