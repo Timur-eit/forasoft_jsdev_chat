@@ -1,7 +1,6 @@
 import React from "react"
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Divider from '@material-ui/core/Divider'
 import ListItemText from '@material-ui/core/ListItemText'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import './style.scss'
@@ -34,23 +33,23 @@ const Messages: React.FC<IMessagesProps> = ({messages}) => {
     const classes = useStyles()
 
     return (
-        <List className={classes.root}>
-        {messages.map((message, i) => {
-          console.log(message)
-          return (
-            <div key={message.userName + i}>
-              <ListItem alignItems="flex-start">
-                <ListItemText
-                  primary={message.userName}
-                  secondary={message.text}
-                />
-              </ListItem>
-              <Divider variant="inset" component="li"/>
-            </div>
-
-          )
-        })}
-      </List> 
+        <div className='messages-block'>
+            <List className={classes.root}>
+            {messages.map((message, i) => {
+              console.log(message)
+              return (
+                <div className='message' key={message.userName + i}>
+                  <ListItem alignItems="flex-start">
+                    <ListItemText
+                      primary={message.userName}
+                      secondary={message.text}
+                    />
+                  </ListItem>              
+                </div>
+              )
+            })}
+            </List> 
+      </div>
     )
 }
 

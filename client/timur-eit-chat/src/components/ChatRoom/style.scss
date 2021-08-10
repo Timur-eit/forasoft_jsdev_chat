@@ -1,8 +1,35 @@
 .chat-container {
+    display: flex;
+    flex-direction: column;
+    .chat-body {
+        display: flex;
+        justify-content: space-between;
+        .chat-body__messages {
+            width: 75%;
+        }
+    }
+
+
     color: #000000;
     > h2 > span {
         color: #808080;
     }
-    
+
     padding: 2em;
+
+    .chat-messages {
+        height: 18em;
+        overflow: scroll;
+    }
+}
+
+.users-input {
+    form {
+        display: flex;
+        flex-direction: column;
+        > * {
+            margin: 0.3em 0;
+        }
+    }
+
 }

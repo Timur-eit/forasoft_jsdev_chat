@@ -1,0 +1,10 @@
+.messages-block {
+    
+    .message:nth-child(1n) {
+        background-color: rgb(223, 248, 223);
+    }
+    
+    .message:nth-child(2n) {
+        background-color: rgba(213, 234, 248, 0.986);
+    }
+}

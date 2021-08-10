@@ -24,8 +24,7 @@ interface IChatRoomProps {
 
 const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
   const [messageValue, setMessageValue] = React.useState('')
-  const messagesRef = React.useRef(null)
-
+  const messagesRef = React.useRef<HTMLDivElement>(null)
   interface IParams {
     chat_id: string | undefined
   }
@@ -41,8 +40,8 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
             const obj: any = {userName, roomId: params.chat_id}
             onLogin(obj)
           })
-          .catch((_err) => {            
-            alert('This room doesn`s exist, please create the rooom')
+          .catch((_err) => {
+            alert('This room doesn\'t exist, please create the rooom')
             history.push('/')
           })
         }
@@ -59,38 +58,51 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
       userName,
       text: messageValue,
     })
-    // имитация добавления сообщения (своего), как-будто от сервера
+    // add user's message to his self front
     setMessageValue('')
-    // window.scrollTo(0, document.body.scrollHeight);
   }
 
-  // React.useEffect(() => {
-  //   messagesRef.current.scrollTo(0, 999999)
-  // }, [messages])
+  React.useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTo(0, 999)
+    }
+  }, [messages])
 
   return (
     <div className='chat-container'>
       <h2>Room ID: <span>{roomId}</span></h2>
-      <UsersList users={users}/>
 
-      <div ref={messagesRef} className='chat-messages'>
-        <Messages messages={messages} />
+      <div className='chat-body'>
+        <div className='chat-body__user-lisr'>
+          <UsersList users={users}/>
+        </div>
+        <div className='chat-body__messages'>
+          <div ref={messagesRef} className='chat-messages'>
+            <Messages messages={messages} />
+          </div>
+          <div className='users-input'>
+            <form>
+              <TextareaAutosize
+                aria-label="new message"
+                placeholder="enter message"
+                value={messageValue}
+                minRows={3}
+                onChange={(e) => setMessageValue(e.target.value)}
+              />
+              <Button variant="contained" color="primary" onClick={() => onSendMessage()}>
+                Send
+              </Button>
+            </form>
+          </div>
       </div>
+    </div>
 
-      <div className='users-input'>
-        <form>
-          <TextareaAutosize
-            aria-label="new message"
-            placeholder="enter message"
-            value={messageValue}
-            minRows={3}
-            onChange={(e) => setMessageValue(e.target.value)}
-          />
-          <Button variant="contained" color="primary" onClick={() => onSendMessage()}>
-            Send
-          </Button>
-        </form>
-      </div>
+
+
+
+
+
+
     </div>
   )
 }
