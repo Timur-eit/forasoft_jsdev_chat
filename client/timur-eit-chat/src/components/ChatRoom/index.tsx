@@ -1,18 +1,13 @@
-import React, {useEffect} from "react"
-import axios from 'axios'
-import socket from "../../socket"
-import {useParams, useHistory} from 'react-router-dom'
-
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
-import Button from "@material-ui/core/Button"
-
-import UsersList from 'shared/ui/UsersList'
-import Messages from 'shared/ui/Messages'
-
-import {IUserData} from '../../shared/interfaces'
-
-import './style.scss'
-
+import React, {useEffect} from 'react';
+import axios from 'axios';
+import socket from "../../socket";
+import {useParams, useHistory} from 'react-router-dom';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Button from '@material-ui/core/Button';
+import UsersList from 'shared/ui/UsersList';
+import Messages from 'shared/ui/Messages';
+import {IUserData} from '../../shared/interfaces';
+import './style.scss';
 interface IChatRoomProps {
   users: string[],
   messages: Array<{userName: string, text: string, date: Date}>,
@@ -23,14 +18,14 @@ interface IChatRoomProps {
 }
 
 const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
-  const [messageValue, setMessageValue] = React.useState('')
-  const messagesRef = React.useRef<HTMLDivElement>(null)
+  const [messageValue, setMessageValue] = React.useState('');
+  const messagesRef = React.useRef<HTMLDivElement>(null);
   interface IParams {
     chat_id: string | undefined
   }
 
-  const params: IParams = useParams()
-  const history = useHistory()
+  const params: IParams = useParams();
+  const history = useHistory();
 
   useEffect( () => {
       if (!userName) {
@@ -40,23 +35,23 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
             let roomId: string | undefined = params.chat_id;
 
             (function getUserName() {
-              const promptName = window.prompt('Please enter user name - max 10 symbols')
+              const promptName = window.prompt('Please enter user name - max 10 symbols');
               if (promptName && promptName.length < 10) {
-                userName = promptName
+                userName = promptName;
               } else {
-                getUserName()
+                getUserName();
               }
             })()
 
-            const obj: IUserData = {userName, roomId}
-            onLogin(obj)
+            const obj: IUserData = {userName, roomId};
+            onLogin(obj);
           })
           .catch((_err) => {
-            alert('This room doesn\'t exist, please create the rooom')
-            history.push('/')
+            alert('This room doesn\'t exist, please create the rooom');
+            history.push('/');
           })
         }
-  }, [params, userName, onLogin, history])
+  }, [params, userName, onLogin, history]);
 
   const onSendMessage = () => {
     socket.emit('ROOM_NEW_MESSAGE', {
@@ -64,19 +59,19 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
       roomId,
       text: messageValue,
 
-    })
+    });
     onAddMessage({
       userName,
       text: messageValue,
       date: new Date(),
-    })
+    });
     // add user's message to his self front
-    setMessageValue('')
+    setMessageValue('');
   }
 
   React.useEffect(() => {
     if (messagesRef.current) {
-      messagesRef.current.scrollTo(0, 999)
+      messagesRef.current.scrollTo(0, 999);
     }
   }, [messages])
 
@@ -106,17 +101,10 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
               </Button>
             </form>
           </div>
+        </div>
       </div>
-    </div>
-
-
-
-
-
-
-
     </div>
   )
 }
 
-export default ChatRoom
+export default ChatRoom;

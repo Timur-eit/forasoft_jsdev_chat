@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper'
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((_theme: Theme) =>
   createStyles({
@@ -18,7 +18,7 @@ const useStyles = makeStyles((_theme: Theme) =>
 
 
 const MaterialPaperWraper: React.FC<{ children: any}> = ({children}) => {    
-    const classes = useStyles()
+    const classes = useStyles();
     return (
         <Paper elevation={2} className={classes.root}>
             {children}
@@ -27,4 +27,4 @@ const MaterialPaperWraper: React.FC<{ children: any}> = ({children}) => {
     )
 }
 
-export default MaterialPaperWraper
+export default MaterialPaperWraper;

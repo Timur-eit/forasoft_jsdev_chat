@@ -1,13 +1,10 @@
-import React from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import './style.scss'
-
-
-
+import React from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import './style.scss';
 interface IUsersListProps {
     [prop: string]: any,
     users: string[],
@@ -31,4 +28,4 @@ const UsersList: React.FC<IUsersListProps> = ({users}) => {
     )
 }
 
-export default UsersList
+export default UsersList;
