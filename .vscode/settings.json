@@ -5,9 +5,11 @@
         "divider",
         "ducks",
         "formik",
+        "greeting",
         "icons",
         "intro",
         "joined",
+        "paper",
         "reducers",
         "reselect",
         "set",
@@ -15,6 +17,7 @@
         "submitting",
         "textarea",
         "theme",
-        "welcome"
+        "welcome",
+        "wraper"
     ]
 }
