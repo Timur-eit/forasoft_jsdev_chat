@@ -11,7 +11,8 @@
 
 * Then to start frontend:
 * In the `client` directory run:
-    * `cd timur-eit-chat ` 
+    * `cd timur-eit-chat` 
+    * `npm install` 
     * `npm run start`
 
 * Then on the welcome page please input your name, click on the button or press TAB => ENTER
