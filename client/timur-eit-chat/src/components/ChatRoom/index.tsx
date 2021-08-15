@@ -1,13 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import axios from 'axios';
-import socket from "../../socket";
+import socket from "socket";
 import {useParams, useHistory} from 'react-router-dom';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 import UsersList from 'shared/ui/UsersList';
 import Messages from 'shared/ui/Messages';
-import {IUserData} from '../../shared/interfaces';
+import {IUserData} from 'shared/interfaces';
 import './style.scss';
+
+import {getInviteLink} from 'shared/utils'
+
 interface IChatRoomProps {
   users: string[],
   messages: Array<{userName: string, text: string, date: Date}>,
@@ -25,9 +28,9 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
   }
 
   const params: IParams = useParams();
-  const history = useHistory();
+  const history = useHistory();  
 
-  useEffect( () => {
+  React.useEffect( () => {
       if (!userName) {
         axios.get(`http://localhost:9999/rooms/${params.chat_id}`)
           .then((_data) => {
@@ -73,11 +76,13 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
     if (messagesRef.current) {
       messagesRef.current.scrollTo(0, 999);
     }
-  }, [messages])
+  }, [messages])  
 
   return (
     <div className='chat-container'>
-      <h2>Room ID: <span>{roomId}</span></h2>
+      <h2>Room ID: <span>{roomId}</span></h2>      
+
+      <button onClick={() => getInviteLink()}>Get invite link</button>
 
       <div className='chat-body'>
         <div className='chat-body__user-lisr'>
