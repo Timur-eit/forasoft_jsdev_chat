@@ -8,7 +8,10 @@ import UsersList from 'shared/ui/UsersList';
 import Messages from 'shared/ui/Messages';
 import {IUserData} from 'shared/interfaces';
 import GetInviteButton from 'shared/ui/GetInvite'
+import {messageValid} from 'shared/utils'
 import './style.scss';
+
+const MESSAGE_ERROR = 'Value must not be empty'
 
 interface IChatRoomProps {
     users: string[],
@@ -21,6 +24,9 @@ interface IChatRoomProps {
 
 const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
     const [messageValue, setMessageValue] = React.useState('');
+    const [messageError, setMessageError] = React.useState<string | null>(MESSAGE_ERROR);
+    const [touched, setTouched] = React.useState<boolean>(false);
+
     const messagesRef = React.useRef<HTMLDivElement>(null);
     interface IParams {
         chat_id: string | undefined
@@ -59,12 +65,11 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
         socket.emit('ROOM_NEW_MESSAGE', {
             userName,
             roomId,
-            text: messageValue,
-
+            text: messageValue.trim(),
         });
         onAddMessage({
             userName,
-            text: messageValue,
+            text: messageValue.trim(),
             date: new Date(),
         });
         // add user's message to his self front
@@ -85,22 +90,35 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
             <div className='chat-body__user-lisr'>
             <GetInviteButton />
             <UsersList users={users}/>
-        </div>        
-        
+        </div>
+
         <div className='chat-body__messages'>
             <div ref={messagesRef} className='chat-messages'>
                 <Messages messages={messages} />
             </div>
                 <div className='users-input'>
                     <form>
+                        {messageError && touched && <div>{messageError}</div>}
                         <TextareaAutosize
                             aria-label="new message"
                             placeholder="enter message"
                             value={messageValue}
                             minRows={3}
-                            onChange={(e) => setMessageValue(e.target.value)}
+                            onChange={(e) => {
+                                setMessageError(messageValid(e.target.value));
+                                setMessageValue(e.target.value);
+                                }
+                            }
                         />
-                        <Button variant="contained" color="primary" onClick={() => onSendMessage()}>
+                        <Button disabled={messageError && touched ? true : false} variant="contained" color="primary" onClick={() => {
+                            !touched && setTouched(true)
+                            if (!messageError) {
+                                onSendMessage();
+                                setMessageValue('');
+                                setTouched(false);
+                                setMessageError(MESSAGE_ERROR);
+                            }
+                        }}>
                             Send
                         </Button>
                     </form>

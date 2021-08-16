@@ -13,7 +13,7 @@ interface IGreetingBlockProps {
 const GreetingBlock: React.FC<IGreetingBlockProps> = ({ onLogin }) => {
     const [userName, setUserName] = React.useState('');
     const history = useHistory();
-    const onEnter = async () => {
+    const onEnter =  React.useCallback(async () => {
         if (!userName) {
             return alert('Please input all fields');
         } else if ( userName.length > 10) {
@@ -28,7 +28,7 @@ const GreetingBlock: React.FC<IGreetingBlockProps> = ({ onLogin }) => {
             onLogin(obj);
             history.push('/'+ roomId);
         }
-    };
+    }, [userName, history, onLogin])
 
     return (
         <div className='greeting-block-container'>
