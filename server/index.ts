@@ -1,11 +1,12 @@
 import express from 'express';
 import socket from 'socket.io';
 import cors from 'cors';
-import {v1} from 'uuid';
 import http from 'http';
 import { Server } from 'socket.io';
 import { port } from './constants';
 import * as ts from 'typescript';
+
+import router from './routes';
 
 const app: express.Application = express();
 // create express application
@@ -27,43 +28,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json()); // чтобы в body отображались post data в виде json
 
-const rooms: ts.ESMap<string, any> = new Map();
-// collection as database
 
-app.get('/rooms/:roomId', (req, res) => {
-    const { roomId } = req.params;
-    interface roomData {
-        users: string[],
-        messages: string[],
-    }
-
-    const obj: roomData = rooms.has(roomId) ? {
-        users: [...rooms.get(roomId).get('users').values()],
-        messages: [...rooms.get(roomId).get('messages').values()],
-    } : { users: [], messages: [] };
-
-    if(!obj.users.length) {
-        res.status(400).send('room doesn`t exist');
-    } else {
-        res.json(obj);
-    }
-    // get list off all users
-});
+app.use('/rooms', router)
 
 
-app.post('/rooms', (_req, res) => {
-    const roomId: string = v1();
-    const userCollection: ts.ESMap<string, ts.ESMap<string, string>> = new Map();
-    const roomCollection: ts.ESMap<string, object> = new Map();
 
-    roomCollection.set('users', userCollection);
-    roomCollection.set('messages', []);
-
-    if (!rooms.has(roomId)) {
-        rooms.set(roomId, roomCollection);
-    }
-    res.send(roomId);
-});
 
 io.on('connection', socket => {
     // socket - data of each socket user
