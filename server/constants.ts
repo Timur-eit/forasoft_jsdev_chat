@@ -1,6 +1,6 @@
-export const port: number = 9999;
+export const port = 9999;
 interface IActions {
-    [action: string]: string
+    [action: string]: string;
 }
 
 export const actions: IActions = {
@@ -12,4 +12,3 @@ export const actions: IActions = {
     connect_error: 'connect_error',
     SERVER_CONNECTION_ERROR: 'SERVER_CONNECTION_ERROR',
 };
-
