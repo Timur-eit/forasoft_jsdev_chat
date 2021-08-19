@@ -2,7 +2,6 @@ import React from 'react'
 import {Switch, Route} from 'react-router-dom'
 import GreetingBlock from 'components/GreetingBlock'
 import ChatRoom from 'components/ChatRoom'
-import socket, {socketActions} from '../../socket'
 
 import 'App.scss'
 
@@ -16,17 +15,14 @@ const ChatApp: React.FC<IAppProps> = (props) => {
         userName,
         users,
         messages,
-        setUsers,
         onLogin,
         addMessage,
+        initialChat
     } = props;
 
   React.useEffect(() => {
-    socket.on(socketActions.ROOM_SET_USERS, (users: string[]) => setUsers(users))
-    socket.on(socketActions.ROOM_NEW_MESSAGE, (message: Array<{userName: string, text: string, date: Date}>) => {
-      addMessage(message)
-    })
-  }, [setUsers, addMessage])
+      initialChat()
+  }, [initialChat])
 
   console.log(messages)
 

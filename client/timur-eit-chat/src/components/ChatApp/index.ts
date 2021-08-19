@@ -11,15 +11,17 @@ import {
     setUsers,
     onLogin,
     addMessage,
+    initialChat,
 } from '../../ducks/chat'
 
-export default connect((state: IStore<IReducerRecord>) => ({    
-    roomI: roomIdSelector(state),
+export default connect((state: IStore<IReducerRecord>) => ({
+    roomId: roomIdSelector(state),
     userName: userNameSelector(state),
     users: usersSelector(state),
     messages: messagesSelector(state),
 }), {
     setUsers,
+    initialChat,
     onLogin,
     addMessage,
 })(ChatApp)

@@ -3,9 +3,8 @@ import {createSelector} from "reselect";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import axios from 'axios'
-import qs from 'qs';
 
-import {IStore, IAction, IUserData, IRoomData} from './interfaces';
+import {IAction, IRoomData, IStore, IUserData, IMessage} from './interfaces';
 import socket, {socketActions} from 'socket';
 
 export const moduleName = 'chat'
@@ -13,12 +12,13 @@ export const moduleName = 'chat'
 export const JOINED = `${moduleName}/JOINED`
 export const SET_USERS = `${moduleName}/SET_USERS`
 export const NEW_MESSAGE = `${moduleName}/NEW_MESSAGE`
+
 export interface IReducerRecord {
     // joined: boolean,
     roomId: null | number,
     userName: null | string,
     users: string[],
-    messages: Array<{userName: string, text: string, date: Date}>,
+    messages: IMessage[],
 }
 
 export const reducerRecord: IReducerRecord = {
@@ -47,7 +47,8 @@ export default function reducer(state = reducerRecord, action: IAction) {
             return Object.assign({}, state, {
                 messages: payload
             })
-        default: return state
+        default:
+            return state
     }
 }
 
@@ -63,7 +64,7 @@ export const setUsers = (users: string[]): ThunkAction<void, IStore<IReducerReco
         type: SET_USERS,
         payload: users
     })
-  }
+}
 
 export const onLogin = (obj: IUserData): ThunkAction<void, IStore<IReducerRecord>, unknown, AnyAction> => async (dispatch): Promise<void> => {
     dispatch({
@@ -78,7 +79,7 @@ export const onLogin = (obj: IUserData): ThunkAction<void, IStore<IReducerRecord
     const responseData: IRoomData = serverResponse.data
     if (!responseData.users.includes(obj.userName)) {
         responseData.users.push(obj.userName)
-    }    
+    }
     dispatch({
         type: SET_USERS,
         payload: responseData.users,
@@ -87,13 +88,37 @@ export const onLogin = (obj: IUserData): ThunkAction<void, IStore<IReducerRecord
 
 
 export const addMessage = (
-    message: Array<{userName: string, text: string, date: Date}>
-    ): ThunkAction<void, IStore<IReducerRecord>, unknown, AnyAction> => (dispatch, getState): void => {
+    message: IMessage
+): ThunkAction<void, IStore<IReducerRecord>, unknown, AnyAction> => (dispatch, getState): void => {
 
     const messages = messagesSelector(getState());
+    const roomId = roomIdSelector(getState());
+    const userName = usersSelector(getState());
+
+    socket.emit('ROOM_NEW_MESSAGE', {
+        userName,
+        roomId,
+        text: message.text.trim(),
+    });
 
     dispatch({
         type: NEW_MESSAGE,
         payload: [...messages, message]
+    })
+}
+
+
+export const initialChat = (): ThunkAction<void, IStore<IReducerRecord>, unknown, AnyAction> => (dispatch, getState): void => {
+    const messages = messagesSelector(getState()) || [];
+    socket.on(socketActions.ROOM_SET_USERS, (users: string[]) => dispatch({
+        type: SET_USERS,
+        payload: users
+    }))
+
+    socket.on(socketActions.ROOM_NEW_MESSAGE, (message: Array<{ userName: string, text: string, date: Date }>) => {
+        dispatch({
+            type: NEW_MESSAGE,
+            payload: [...messages, message]
+        })
     })
 }
