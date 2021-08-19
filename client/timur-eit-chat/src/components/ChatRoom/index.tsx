@@ -22,7 +22,16 @@ interface IChatRoomProps {
     onLogin: (obj: IUserData) => Promise<void>,
 }
 
-const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, onAddMessage, onLogin}) => {
+const ChatRoom: React.FC<IChatRoomProps> = (props) => {
+    const {
+        users,
+        messages,
+        userName,
+        roomId,
+        onAddMessage,
+        onLogin
+    } = props;
+    
     const [messageValue, setMessageValue] = React.useState('');
     const [messageError, setMessageError] = React.useState<string | null>(MESSAGE_ERROR);
     const [touched, setTouched] = React.useState<boolean>(false);
@@ -81,6 +90,8 @@ const ChatRoom: React.FC<IChatRoomProps> = ({users, messages, userName, roomId, 
         messagesRef.current.scrollTo(0, 999);
         }
   }, [messages])
+
+//   console.log(messages)
 
   return (
     <div className='chat-container'>

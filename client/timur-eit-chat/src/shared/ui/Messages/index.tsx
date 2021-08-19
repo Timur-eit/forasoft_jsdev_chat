@@ -23,7 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+
+
 const Messages: React.FC<IMessagesProps> = ({messages}) => {
+
+  // console.log(messages)
 
     const classes = useStyles()
     return (
