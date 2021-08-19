@@ -1,6 +1,4 @@
-# Testing task for a Fora Soft JS Developer
-## The chat which is implemented with socket.io
-
+# Chat which is implemented with socket.io
 ### To test please follow the below instructions.
 
 * `git clone <this repo>`
