@@ -35,7 +35,7 @@ const Messages: React.FC<IMessagesProps> = ({messages}) => {
               <ListItem alignItems="flex-start">
                 <ListItemText
                   primary={message.userName}
-                  secondary={`${message.date}: ${message.text}`}
+                  secondary={<pre>{`${message.date}: ${message.text}`}</pre>}
                 />
               </ListItem>
             </div>

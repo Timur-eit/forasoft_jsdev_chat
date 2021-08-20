@@ -9,6 +9,7 @@
         "icons",
         "intro",
         "joined",
+        "outlined",
         "paper",
         "reducers",
         "reselect",

@@ -14,13 +14,21 @@
     "scripts": {
         "build": "tsc --project ./",
         "dev": "ts-node-dev --respawn --transpile-only index.ts",
-        "start": "node index.js"
+        "start": "node index.js",
+        "lint": "npx eslint ./",
+        "format": "npx prettier --write .",
+        "check": "npx prettier --check ."
     },
     "devDependencies": {
         "@types/cors": "^2.8.12",
         "@types/express": "^4.17.13",
         "@types/node": "^15.12.5",
         "@types/pg": "^8.6.1",
+        "@typescript-eslint/eslint-plugin": "^4.29.2",
+        "@typescript-eslint/parser": "^4.29.2",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.3.0",
+        "prettier": "2.3.2",
         "ts-node-dev": "^1.1.8"
     }
 }
